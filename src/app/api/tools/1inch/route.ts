@@ -3,7 +3,7 @@ import { type NextRequest, NextResponse } from "next/server";
 import { orderRequestFlow } from "./util/orderFlow";
 import { validateRequest } from "../util";
 
-// Refer to https://api.cow.fi/docs/#/ for Specifics on Quoting and Order posting.
+// Refer to https://github.com/1inch/fusion-sdk for Specifics on Quoting and Order posting.
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const headerError = await validateRequest(req);

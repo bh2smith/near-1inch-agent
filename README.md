@@ -1,10 +1,10 @@
-# CoWSwap AI Agent
+# 1inch AI Agent by [Bitte](https://www.bitte.ai/)
 
-This is a [Next.js](https://nextjs.org) project that implements an AI-powered agent for interacting with CoW Protocol (Coincidence of Wants). The agent helps users generate and execute transactions on CoW Protocol across supported EVM networks.
+This is a [Next.js](https://nextjs.org) project that implements an AI-powered agent for interacting with 1inch Fusion. The agent helps users generate and execute transactions on 1inch Fusion across supported EVM networks.
 
 ## Features
 
-- Generate transaction data for CoW Protocol interactions
+- Generate transaction data for 1inch Fusion
 - Support for selling native assets (ETH, xDAI, POL, BNB)
 - ERC20 token transfers
 - WETH wrapping and unwrapping

@@ -19,7 +19,6 @@ const quoteRequest = {
 };
 
 describe("1inch Plugin", () => {
-  // This posts an order to COW Orderbook.
   it.skip("orderRequestFlow", async () => {
     console.log("Requesting Quote...");
     const signRequest = await orderRequestFlow({

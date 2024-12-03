@@ -6,27 +6,27 @@ if (!key?.accountId) {
   console.error("no account");
 }
 
-const url = bitteConfig.url || "https://near-cow-agent.vercel.app";
+const url = bitteConfig.url || "https://near-1inch-agent.vercel.app";
 
 export async function GET() {
   const pluginData = {
     openapi: "3.0.0",
     info: {
-      title: "Bitte CoWSwap Agent",
-      description: "API for interactions with CoW Protocol",
+      title: "Bitte 1inch Agent",
+      description: "API for interactions with 1inch Fusion",
       version: "1.0.0",
     },
     servers: [{ url }],
     "x-mb": {
       "account-id": key.accountId,
       assistant: {
-        name: "CoWSwap Assistant",
+        name: "1inch Assistant",
         description:
-          "An assistant that generates transaction data for CoW Protocol Interactions",
+          "An assistant that generates transaction data for 1inch Fusion Interactions",
         instructions:
           "Encodes transactions as signature requests on EVM networks. This assistant is only for EVM networks. Passes the the transaction fields of the response to generate-evm-tx tool for signing and displays the meta content of the response to the user after signing. For selling native assets, such as ETH, xDAI, POL, BNB it uses 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE as the sellToken. It does not infer the chainId. Do not infer the token decimals. Use Token Units for sellAmountBeforeFee. Uses token symbols for sellToken and buyToken unless addresses are provided. Always passes evmAddress as the safeAddress on any request requiring safeAddress. The only supported chains for swap are Ethereum, Gnosis and Arbitrum.",
         tools: [{ type: "generate-evm-tx" }],
-        image: `${url}/cowswap.svg`,
+        image: `${url}/1inch.svg`,
       },
     },
     paths: {
@@ -116,7 +116,7 @@ export async function GET() {
           tags: ["1inch"],
           operationId: "swap",
           summary:
-            "Quote a price and fee for the specified order parameters. Posts unsigned order to CoW and returns Signable payload",
+            "Quote a price and fee for the specified order parameters. Posts unsigned order to 1inch and returns Signable payload",
           description:
             "Given a partial order compute the minimum fee and a price estimate for the order. Return a full order that can be used directly for signing, and with an included signature, passed directly to the order creation endpoint.",
           parameters: [
@@ -324,7 +324,7 @@ export async function GET() {
         },
         SignRequestResponse200: {
           description:
-            "Cowswap order response including transaction and order URL",
+            "1inch Fusion order response including transaction and order URL",
           content: {
             "application/json": {
               schema: {
@@ -339,7 +339,6 @@ export async function GET() {
                       "Additional metadata related to the transaction",
                     additionalProperties: true,
                     example: {
-                      orderUrl: "https://explorer.cow.fi/orders/0x123...",
                       message: "Order submitted successfully",
                     },
                   },
@@ -467,17 +466,6 @@ export async function GET() {
           },
           required: ["to", "data", "value"],
         },
-        AppData: {
-          description:
-            "The string encoding of a JSON object representing some `appData`. The format of the JSON expected in the `appData` field is defined [here](https://github.com/cowprotocol/app-data).",
-          type: "string",
-          example: '{"version":"0.9.0","metadata":{}}',
-        },
-        AppDataHash: {
-          description:
-            "32 bytes encoded as hex with `0x` prefix. It's expected to be the hash of the stringified JSON object representing the `appData`.",
-          type: "string",
-        },
         SellTokenSource: {
           description: "Where should the `sellToken` be drawn from?",
           type: "string",
@@ -544,19 +532,6 @@ export async function GET() {
                     "An optional address to receive the proceeds of the trade instead of the `owner` (i.e. the order signer).",
                   allOf: [{ $ref: "#/components/schemas/Address" }],
                   nullable: true,
-                },
-                appData: {
-                  description:
-                    "AppData which will be assigned to the order. Expects either a string JSON doc as defined on [AppData](https://github.com/cowprotocol/app-data) or a hex encoded string for backwards compatibility. When the first format is used, it's possible to provide the derived appDataHash field.",
-                  oneOf: [
-                    { $ref: "#/components/schemas/AppData" },
-                    { $ref: "#/components/schemas/AppDataHash" },
-                  ],
-                },
-                appDataHash: {
-                  description:
-                    "The hash of the stringified JSON appData doc. If present, `appData` field must be set with the aforementioned data where this hash is derived from. In case they differ, the call will fail.",
-                  anyOf: [{ $ref: "#/components/schemas/AppDataHash" }],
                 },
                 sellTokenBalance: {
                   allOf: [{ $ref: "#/components/schemas/SellTokenSource" }],
