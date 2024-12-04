@@ -1,20 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
-import { validateRequest as innerValidate } from "@bitteprotocol/agent-sdk";
-
-const safeSaltNonce = process.env.SAFE_SALT_NONCE;
-
-export async function validateRequest(
-  req: NextRequest,
-): Promise<NextResponse | null> {
-  if (!safeSaltNonce) {
-    throw new Error("SAFE_SALT_NONCE is not set");
-  }
-  return innerValidate<NextRequest, NextResponse>(req, safeSaltNonce);
-}
-
+import { validateRequest } from "@bitteprotocol/agent-sdk";
 import { Address, getAddress } from "viem";
 import { MetaTransaction } from "near-safe";
 import { checkAllowance, erc20Approve } from "@bitteprotocol/agent-sdk";
+
+export async function validateNextRequest(
+  req: NextRequest,
+  safeSaltNonce?: string,
+): Promise<NextResponse | null> {
+  return validateRequest<NextRequest, NextResponse>(
+    req,
+    safeSaltNonce || "0",
+    (data: unknown, init?: { status?: number }) =>
+      NextResponse.json(data, init),
+  );
+}
 
 // CoW (and many other Dex Protocols use this to represent native asset).
 export const NATIVE_ASSET = "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE";

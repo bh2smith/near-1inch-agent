@@ -57,60 +57,6 @@ export async function GET() {
           },
         },
       },
-      "/api/tools/balances": {
-        get: {
-          tags: ["balances"],
-          summary: "Get Token Balances",
-          description: "Returns token balances for the connected wallet",
-          operationId: "get-balances",
-          parameters: [
-            { $ref: "#/components/parameters/chainId" },
-            { $ref: "#/components/parameters/safeAddress" },
-          ],
-          responses: {
-            "200": {
-              description: "List of token balances",
-              content: {
-                "application/json": {
-                  schema: {
-                    type: "array",
-                    items: {
-                      type: "object",
-                      properties: {
-                        token: {
-                          $ref: "#/components/schemas/Address",
-                        },
-                        balance: {
-                          type: "string",
-                          description: "Token balance in smallest units (wei)",
-                          example: "1000000000000000000",
-                        },
-                        symbol: {
-                          type: "string",
-                          description: "Token symbol",
-                          example: "USDC",
-                        },
-                        decimals: {
-                          type: "number",
-                          description: "Token decimals",
-                          example: 18,
-                        },
-                        logoUri: {
-                          type: "string",
-                          description: "Token logo URI",
-                          example: "https://example.com/token-logo.png",
-                        },
-                      },
-                      required: ["token", "balance", "symbol", "decimals"],
-                    },
-                  },
-                },
-              },
-            },
-            "400": { $ref: "#/components/responses/BadRequest400" },
-          },
-        },
-      },
       "/api/tools/1inch": {
         post: {
           tags: ["1inch"],
@@ -195,56 +141,6 @@ export async function GET() {
             "500": {
               description: "Unexpected error quoting an order.",
             },
-          },
-        },
-      },
-      "/api/tools/erc20": {
-        get: {
-          tags: ["erc20"],
-          summary: "Encodes ERC20 (Fungible) Token Transfer",
-          description: "Encodes ERC20 transfer transaction as MetaTransaction",
-          operationId: "erc20-transfer",
-          parameters: [
-            { $ref: "#/components/parameters/chainId" },
-            { $ref: "#/components/parameters/amount" },
-            { $ref: "#/components/parameters/recipient" },
-            { $ref: "#/components/parameters/token" },
-          ],
-          responses: {
-            "200": { $ref: "#/components/responses/SignRequest200" },
-            "400": { $ref: "#/components/responses/BadRequest400" },
-          },
-        },
-      },
-      "/api/tools/weth/wrap": {
-        get: {
-          tags: ["wrap"],
-          summary: "Encode WETH deposit",
-          description: "Encodes WETH deposit Transaction as MetaTransaction",
-          operationId: "wrap",
-          parameters: [
-            { $ref: "#/components/parameters/amount" },
-            { $ref: "#/components/parameters/chainId" },
-          ],
-          responses: {
-            "200": { $ref: "#/components/responses/SignRequest200" },
-            "400": { $ref: "#/components/responses/BadRequest400" },
-          },
-        },
-      },
-      "/api/tools/weth/unwrap": {
-        get: {
-          tags: ["unwrap"],
-          summary: "Encode WETH withdraw",
-          description: "Encodes WETH withdraw Transaction as MetaTransaction",
-          operationId: "unwrap",
-          parameters: [
-            { $ref: "#/components/parameters/amount" },
-            { $ref: "#/components/parameters/chainId" },
-          ],
-          responses: {
-            "200": { $ref: "#/components/responses/SignRequest200" },
-            "400": { $ref: "#/components/responses/BadRequest400" },
           },
         },
       },
