@@ -4,6 +4,7 @@ import { sellTokenApprovalTx } from "../../util";
 import { signRequestFor } from "@bitteprotocol/agent-sdk";
 import { getAddress } from "viem";
 
+// https://portal.1inch.dev/documentation/apis/swap/classic-swap/quick-start
 const authKey = process.env.ONEINCH_AUTH_KEY;
 if (!authKey) {
   throw new Error("ONEINCH_AUTH_KEY is not set");
