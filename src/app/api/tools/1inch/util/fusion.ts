@@ -15,38 +15,42 @@ if (!authKey) {
   throw new Error("ONEINCH_AUTH_KEY is not set");
 }
 
-function getFusionSdk() {
+function getFusionSdk(chainId: number) {
   return new FusionSDK({
     url: "https://api.1inch.dev/fusion",
-    network: 100,
+    network: chainId,
     authKey,
   });
 }
 
-export async function orderRequestFlow({
+// TODO: Implement Fusion Orders
+export async function fusionRequestFlow({
   chainId,
   quoteRequest,
 }: ParsedQuoteRequest): Promise<{
   transaction: SignRequestData;
   meta: { orderData: PreparedOrder };
 }> {
-  const fusionSdk = getFusionSdk();
+  const fusionSdk = getFusionSdk(chainId);
   console.log(`Requesting quote for ${JSON.stringify(quoteRequest, null, 2)}`);
   const metaTransactions: MetaTransaction[] = [];
   const quoteResponse = await fusionSdk.getQuote(quoteRequest);
   console.log("unusedQuoteResponse", quoteResponse);
+
   const approvalTx = await sellTokenApprovalTx({
     ...quoteRequest,
     chainId,
     from: quoteRequest.walletAddress,
-    spender: zeroAddress,
+    spender: getAddress(quoteResponse.settlementAddress.toString()),
     sellAmount: quoteRequest.amount,
   });
   if (approvalTx) {
+    console.log("prepending approval");
     // TODO: Update approval address.
     metaTransactions.push(approvalTx);
   }
-  // TODO: Determine how to acquire Signature and post
+
+  // TODO: Get Create Order to work....
   const { order, quoteId } = await fusionSdk.createOrder(quoteRequest);
   console.log("Order with quoteId", quoteId, order);
   const typedData = await getOrderTypedData(chainId, order);
@@ -79,7 +83,7 @@ export async function submitSignedOrder(
   signature: string,
   quoteId: string,
 ): Promise<OrderInfo> {
-  const fusionSdk = getFusionSdk();
+  const fusionSdk = getFusionSdk(chainId);
   const orderStruct = order.build();
 
   const relayerRequest = RelayerRequest.new({

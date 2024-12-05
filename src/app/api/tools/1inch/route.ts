@@ -1,6 +1,6 @@
 import { parseQuoteRequest } from "@/src/app/api/tools/1inch/util/parse";
 import { type NextRequest, NextResponse } from "next/server";
-import { orderRequestFlow } from "./util/orderFlow";
+import { orderRequestFlow } from "./util/classic";
 import { validateNextRequest } from "../util";
 
 // Refer to https://github.com/1inch/fusion-sdk for Specifics on Quoting and Order posting.
